@@ -1,6 +1,6 @@
 # Tiny Tapeout project information
 project:
-  title:        ""      # Project title
+  title:        "4-bit ALU"      # Project title
   author:       ""      # Your name
   discord:      ""      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
   description:  ""      # One line description of what your project does
@@ -23,29 +23,29 @@ project:
 # This section is for the datasheet/website. Use descriptive names (e.g., RX, TX, MOSI, SCL, SEG_A, etc.).
 pinout:
   # Inputs
-  ui[0]: ""
-  ui[1]: ""
-  ui[2]: ""
-  ui[3]: ""
-  ui[4]: ""
-  ui[5]: ""
-  ui[6]: ""
-  ui[7]: ""
+  ui[0]: "a[0]"
+  ui[1]: "a[1]"
+  ui[2]: "a[2]"
+  ui[3]: "a[3]"
+  ui[4]: "b[0]"
+  ui[5]: "b[1]"
+  ui[6]: "b[2]"
+  ui[7]: "b[3]"
 
   # Outputs
-  uo[0]: ""
-  uo[1]: ""
-  uo[2]: ""
-  uo[3]: ""
-  uo[4]: ""
-  uo[5]: ""
+  uo[0]: "alu_out[0]"
+  uo[1]: "alu_out[1]"
+  uo[2]: "alu_out[2]"
+  uo[3]: "alu_out[3]"
+  uo[4]: "carry_borrow"
+  uo[5]: "odd_parity"
   uo[6]: ""
   uo[7]: ""
 
   # Bidirectional pins
-  uio[0]: ""
-  uio[1]: ""
-  uio[2]: ""
+  uio[0]: "opcode[0]"
+  uio[1]: "opcode[1]"
+  uio[2]: "opcode[2]"
   uio[3]: ""
   uio[4]: ""
   uio[5]: ""
