@@ -15,7 +15,6 @@ The ALU produces a 4-bit result and includes two status flags: Carry/Borrow for 
 
 ## How to test
 
-Explain how to use your project
 The ALU opertation can be tested using the following operation code(opcode) given that both rst_n and ena are HIGH:
 000: Addition  
 001: Subtraction  
