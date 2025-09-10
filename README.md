@@ -8,7 +8,7 @@ This project implements a compact 4-bit ALU (Arithmetic Logic Unit) capable of p
 
 The ALU produces a 4-bit result and includes two status flags: Carry/Borrow for arithmetic operations and Odd Parity for quick error-checking. It operates synchronously with a 50 MHz clock and can be enabled or reset using ena and rst_n.
 
-## DOCUMENTATION
+## IO
 
 Input pins:
 ui_in[0]:a[0]
