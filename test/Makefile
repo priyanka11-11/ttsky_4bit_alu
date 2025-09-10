@@ -7,9 +7,6 @@ TOPLEVEL_LANG ?= verilog
 SRC_DIR = $(PWD)/../src
 PROJECT_SOURCES = project.v
 
-# Set COCOTB_RESOLVE_X environment variable to resolve undefined bits
-export COCOTB_RESOLVE_X=ZEROS
-
 ifneq ($(GATES),yes)
 
 # RTL simulation:
@@ -44,4 +41,4 @@ TOPLEVEL = tt_um_4_bit_ALU
 MODULE = test
 
 # include cocotb's make rules to take care of the simulator setup
-include $(shell cocotb-config --makefiles)
+include $(shell cocotb-config --makefiles)/Makefile.sim
