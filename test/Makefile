@@ -29,7 +29,7 @@ VERILOG_SOURCES += $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_f
 VERILOG_SOURCES += $(PWD)/gate_level_netlist.v
 
 # Set COCOTB_RESOLVE_X environment variable to resolve undefined bits
-export COCOTB_RESOLVE_X = ZERO
+export COCOTB_RESOLVE_X=DRIVE_0
 
 endif
 
