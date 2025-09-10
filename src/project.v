@@ -1,4 +1,3 @@
- 
 `timescale 1ns / 1ps
 `default_nettype none
 
@@ -41,17 +40,17 @@ module tt_um_4_bit_ALU (
             odd_parity    <= 1'b0;
         end else if (ena) begin
             case (opcode)
-                OP_ADD:  {carry_borrow, alu_out} = a + b;
-                OP_SUB:  {carry_borrow, alu_out} = a - b; // borrow in MSB
-                OP_AND:  alu_out       = a & b;
-                OP_OR:   alu_out       = a | b;
-                OP_XOR:  alu_out       = a ^ b;
-                OP_NOR:  alu_out       = ~(a | b);
-                OP_NOT:  alu_out       = ~a;
-                OP_PASS: alu_out       = b;
-                default: alu_out       = 4'b0;
+                OP_ADD:  {carry_borrow, alu_out} <= a + b;
+                OP_SUB:  {carry_borrow, alu_out} <= a - b; // borrow in MSB
+                OP_AND:  alu_out       <= a & b;
+                OP_OR:   alu_out       <= a | b;
+                OP_XOR:  alu_out       <= a ^ b;
+                OP_NOR:  alu_out       <= ~(a | b);
+                OP_NOT:  alu_out      <= ~a;
+                OP_PASS: alu_out       <= b;
+                default: alu_out       <= 4'b0;
             endcase
-            odd_parity = ^alu_out; // XOR of all 4 bits
+            odd_parity <= ^alu_out; // XOR of all 4 bits
         end else begin
             // Disable output when ena=0
             alu_out       <= 4'b0;
