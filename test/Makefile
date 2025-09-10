@@ -44,4 +44,4 @@ TOPLEVEL = tt_um_4_bit_ALU
 MODULE = test
 
 # include cocotb's make rules to take care of the simulator setup
-include $(shell cocotb-config --makefiles)Makefile.sim
+include $(shell cocotb-config --makefiles)/Makefile.sim
