@@ -71,7 +71,9 @@ async def alu_operations_test(dut):
     dut.uio_in.value = 0b000  # OP_ADD
     await RisingEdge(dut.clk)
     await Timer(10, units="ns")
+    dut._log.info(f"uo_out before resolve_x: {dut.uo_out.value.binstr}")
     full_output = resolve_x(dut.uo_out.value) & 0x3F
+    dut._log.info(f"uo_out before resolve_x: {dut.uo_out.value.binstr}")
     result = full_output & 0xF
     carry = (full_output >> 4) & 1
     parity = (full_output >> 5) & 1
