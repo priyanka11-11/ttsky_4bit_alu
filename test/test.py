@@ -73,8 +73,10 @@ async def alu_operations_test(dut):
     await Timer(10, units="ns")
     dut._log.info(f"uo_out before resolve_x: {dut.uo_out.value.binstr}")
     full_output = resolve_x(dut.uo_out.value) & 0x3F
-    dut._log.info(f"uo_out before resolve_x: {dut.uo_out.value.binstr}")
+    dut._log.info(f"uo_out after resolve_x: {dut.uo_out.value.binstr}")
     result = full_output & 0xF
+    dut._log.info(f"result after resolve_x: {result}")
+    
     carry = (full_output >> 4) & 1
     parity = (full_output >> 5) & 1
     expected = (3 + 2) & 0xF
