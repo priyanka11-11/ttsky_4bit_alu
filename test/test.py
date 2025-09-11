@@ -5,6 +5,18 @@ import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge, Timer
 
+# The function to handle 'x' values
+def resolve_x(value):
+    """
+    Replaces 'x' or 'z' bits in a Cocotb BinaryValue string representation
+    with '0' before converting to an integer.
+    """
+    bin_str = value.binstr
+    if 'x' in bin_str or 'z' in bin_str:
+        resolved_str = bin_str.replace('x', '0').replace('z', '0')
+        return int(resolved_str, 2)
+    return value.integer
+
 @cocotb.test()
 async def alu_operations_test(dut):
     """Test various ALU operations in the 4-bit ALU including reset and enable cases"""
@@ -32,8 +44,8 @@ async def alu_operations_test(dut):
     await RisingEdge(dut.clk)
     await Timer(10, units="ns")
 
-    # Read only bits 5:0 to avoid 'x' values
-    full_output = int(dut.uo_out.value & 0x3F)
+    # Use the new function to get the resolved output
+    full_output = resolve_x(dut.uo_out.value) & 0x3F
     result = full_output & 0xF
     carry = (full_output >> 4) & 1
     parity = (full_output >> 5) & 1
@@ -57,7 +69,7 @@ async def alu_operations_test(dut):
     dut.uio_in.value = 0b000  # OP_ADD
     await RisingEdge(dut.clk)
     await Timer(10, units="ns")
-    full_output = int(dut.uo_out.value & 0x3F)
+    full_output = resolve_x(dut.uo_out.value) & 0x3F
     result = full_output & 0xF
     carry = (full_output >> 4) & 1
     parity = (full_output >> 5) & 1
@@ -70,7 +82,7 @@ async def alu_operations_test(dut):
     dut.uio_in.value = 0b001  # OP_SUB
     await RisingEdge(dut.clk)
     await Timer(10, units='ns')
-    full_output = int(dut.uo_out.value & 0x3F)
+    full_output = resolve_x(dut.uo_out.value) & 0x3F
     result = full_output & 0xF
     carry = (full_output >> 4) & 1
     parity = (full_output >> 5) & 1
@@ -83,7 +95,7 @@ async def alu_operations_test(dut):
     dut.uio_in.value = 0b010  # OP_AND
     await RisingEdge(dut.clk)
     await Timer(10, units='ns')
-    full_output = int(dut.uo_out.value & 0x3F)
+    full_output = resolve_x(dut.uo_out.value) & 0x3F
     result = full_output & 0xF
     expected = 5 & 10
     assert result == expected, f"AND failed: expected result={expected}, got {result}"
@@ -94,7 +106,7 @@ async def alu_operations_test(dut):
     dut.uio_in.value = 0b011  # OP_OR
     await RisingEdge(dut.clk)
     await Timer(10, units='ns')
-    full_output = int(dut.uo_out.value & 0x3F)
+    full_output = resolve_x(dut.uo_out.value) & 0x3F
     result = full_output & 0xF
     expected = 12 | 1
     assert result == expected, f"OR failed: expected result={expected}, got {result}"
@@ -105,7 +117,7 @@ async def alu_operations_test(dut):
     dut.uio_in.value = 0b100  # OP_XOR
     await RisingEdge(dut.clk)
     await Timer(10, units='ns')
-    full_output = int(dut.uo_out.value & 0x3F)
+    full_output = resolve_x(dut.uo_out.value) & 0x3F
     result = full_output & 0xF
     expected = 12 ^ 3
     assert result == expected, f"XOR failed: expected result={expected}, got {result}"
@@ -116,7 +128,7 @@ async def alu_operations_test(dut):
     dut.uio_in.value = 0b101  # OP_NOR
     await RisingEdge(dut.clk)
     await Timer(10, units='ns')
-    full_output = int(dut.uo_out.value & 0x3F)
+    full_output = resolve_x(dut.uo_out.value) & 0x3F
     result = full_output & 0xF
     expected = ~(0 | 15) & 0xF
     assert result == expected, f"NOR failed: expected result={expected}, got {result}"
@@ -127,7 +139,7 @@ async def alu_operations_test(dut):
     dut.uio_in.value = 0b110  # OP_NOT
     await RisingEdge(dut.clk)
     await Timer(10, units='ns')
-    full_output = int(dut.uo_out.value & 0x3F)
+    full_output = resolve_x(dut.uo_out.value) & 0x3F
     result = full_output & 0xF
     expected = (~4) & 0xF
     assert result == expected, f"NOT failed: expected result={expected}, got {result}"
@@ -138,28 +150,28 @@ async def alu_operations_test(dut):
     dut.uio_in.value = 0b111  # OP_PASS
     await RisingEdge(dut.clk)
     await Timer(10, units='ns')
-    full_output = int(dut.uo_out.value & 0x3F)
+    full_output = resolve_x(dut.uo_out.value) & 0x3F
     result = full_output & 0xF
     expected = 7
     assert result == expected, f"PASS failed: expected result={expected}, got {result}"
     dut._log.info(f"PASS passed: result={result}")
 
-     # --- Case 2: rst_n = 1, ena = 0 (disabled state test) ---
+    # --- Case 2: rst_n = 1, ena = 0 (disabled state test) ---
     # Enable ALU and perform operation first
     dut.ena.value = 1
     dut.ui_in.value = 0x12  # a=2, b=1
     dut.uio_in.value = 0b000  # OP_ADD
     await RisingEdge(dut.clk)
     await Timer(10, units='ns')
-    full_output = int(dut.uo_out.value & 0x3F)
+    full_output = resolve_x(dut.uo_out.value) & 0x3F
     result_active = full_output & 0xF
     assert result_active != 0, f"Precondition failed: expected non-zero result, got {result_active}"
 
-        # Now disable ALU
+    # Now disable ALU
     dut.ena.value = 0
     await RisingEdge(dut.clk)
     await Timer(10, units='ns')
-    full_output = int(dut.uo_out.value & 0x3F)
+    full_output = resolve_x(dut.uo_out.value) & 0x3F
     result_disabled = full_output & 0xF
     carry_disabled = (full_output >> 4) & 1
     parity_disabled = (full_output >> 5) & 1
