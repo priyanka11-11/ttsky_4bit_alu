@@ -69,11 +69,12 @@ async def alu_operations_test(dut):
     # --- Test ADD operation ---
     dut.ui_in.value = 0x23  # a=3, b=2
     dut.uio_in.value = 0b000  # OP_ADD
+    full_output = resolve_x(dut.uo_out.value) & 0x3F    //change done 
+    dut._log.info(f"uo_out after resolve_x: {dut.uo_out.value.binstr}")
     await RisingEdge(dut.clk)
     await Timer(10, units="ns")
-    dut._log.info(f"uo_out before resolve_x: {dut.uo_out.value.binstr}")
-    full_output = resolve_x(dut.uo_out.value) & 0x3F
-    dut._log.info(f"uo_out after resolve_x: {dut.uo_out.value.binstr}")
+    dut._log.info(f"uo_out before time 10ns: {dut.uo_out.value.binstr}")
+    full_output = int(dut.uo_out.value & 0x3F)    //change done 
     result = full_output & 0xF
     dut._log.info(f"result after resolve_x: {result}")
     
